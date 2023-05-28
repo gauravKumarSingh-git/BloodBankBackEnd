@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.bnl.bloodbank.exception.UsernameAlredyPresentException;
+import com.bnl.bloodbank.exception.UsernameNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
@@ -21,6 +22,15 @@ public class ExceptionControllerAdvice {
         errorInfo.setErrorCode(HttpStatus.CONFLICT.value());
         errorInfo.setTimestamp(LocalDateTime.now());
         return new ResponseEntity<>(errorInfo, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorInfo> usernameNotFoundExceptionHandler(UsernameNotFoundException exception){
+        ErrorInfo errorInfo = new ErrorInfo();
+        errorInfo.setErrorMessage(exception.getMessage());
+        errorInfo.setErrorCode(HttpStatus.BAD_REQUEST.value());
+        errorInfo.setTimestamp(LocalDateTime.now());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

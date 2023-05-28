@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.bnl.bloodbank.entity.Admin;
 import com.bnl.bloodbank.exception.UsernameAlredyPresentException;
+import com.bnl.bloodbank.exception.UsernameNotFoundException;
 import com.bnl.bloodbank.repository.AdminRepository;
 
 import jakarta.transaction.Transactional;
@@ -28,10 +29,31 @@ public class AdminServiceImpl implements AdminService {
         if(fromRepo.isPresent()){
             throw new UsernameAlredyPresentException("Admin with Username " + admin.getUsername() + " is already present");
         }
-        String hashPwd = passwordEncoder.encode(admin.getPassword());
-        admin.setPassword(hashPwd);
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         adminRepository.save(admin);
         return "Admin with username " + admin.getUsername() + " successfully created";
+    }
+
+    @Override
+    public Admin findByUsername(String username) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
+        return fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+    }
+
+    @Override
+    public String updatePassword(String username, String password) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
+        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+        admin.setPassword(passwordEncoder.encode(password));
+        return "Password Successfully Changed";
+    }
+
+    @Override
+    public String deleteAdmin(String username) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
+        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+        adminRepository.delete(admin);
+        return "Successfully Deleted admin with username : " + username;
     }
     
 }
