@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BloodBankApplication<blood-bank>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.bnl.bloodbank.BloodBankApplication",
+            "projectName": "blood-bank",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
