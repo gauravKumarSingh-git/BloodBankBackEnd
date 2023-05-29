@@ -98,6 +98,13 @@ public class DonorServiceImpl implements DonorService{
         return donorRepository.findRequestsByUsernameOrderByDate(username);
     }
     
+    
+    @Override
+    public List<Request> getPendingRequests(String username) throws UsernameNotFoundException {
+        if(!isUsernamePresent(username)) throw new UsernameNotFoundException("username " + username + " not found");
+        return donorRepository.findPendingRequestsByUsername(username);
+    }
+    
     private boolean isUsernamePresent(String username){
         if(donorRepository.findByUsername(username).isEmpty()){
             return false;
@@ -111,7 +118,6 @@ public class DonorServiceImpl implements DonorService{
         }
         return true;
     }
-    
     
     
 }

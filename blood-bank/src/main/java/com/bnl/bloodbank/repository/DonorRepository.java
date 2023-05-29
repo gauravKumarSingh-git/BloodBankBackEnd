@@ -17,5 +17,8 @@ public interface DonorRepository extends JpaRepository<Donor, Long>{
 
     @Query("SELECT d.requests from Donor d where d.username = :username")
     List<Request> findRequestsByUsernameOrderByDate(String username);
+
+    @Query("SELECT r from Donor d inner join Request r on d.donorId = r.donor.donorId where d.username = :username and r.status = 'pending'")
+    List<Request> findPendingRequestsByUsername(String username);
     
 }

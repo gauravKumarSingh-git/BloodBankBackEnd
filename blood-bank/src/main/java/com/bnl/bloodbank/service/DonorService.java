@@ -20,5 +20,7 @@ public interface DonorService {
     public Donor findByUsername(String username) throws UsernameNotFoundException;
 
     public List<Request> getRequestsOrderByDate(String username) throws UsernameNotFoundException;
+
+    public List<Request> getPendingRequests(String username) throws UsernameNotFoundException;
     
 }

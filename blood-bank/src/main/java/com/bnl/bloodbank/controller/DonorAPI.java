@@ -58,7 +58,10 @@ public class DonorAPI {
         return new ResponseEntity<>(donorService.getRequestsOrderByDate(username), HttpStatus.OK);
     }
 
-    // @GetMapping("/get")
+    @GetMapping("/getPendingRequests/{username}")
+    public ResponseEntity<List<Request>> getPendingRequests(@PathVariable String username) throws UsernameNotFoundException{
+        return new ResponseEntity<>(donorService.getPendingRequests(username), HttpStatus.OK);
+    }
 
 
 }
