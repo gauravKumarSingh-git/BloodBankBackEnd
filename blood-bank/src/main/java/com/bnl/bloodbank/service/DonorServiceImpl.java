@@ -1,5 +1,6 @@
 package com.bnl.bloodbank.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,8 @@ public class DonorServiceImpl implements DonorService{
                 throw new AlreadyPresentException("Phone Number already present");
             }
         }
+        // donor.setPassword(passwordEncoder.encode(donor.getPassword()));
+        // donorRepository.save(donor);
         donorFromRepo.setPassword(passwordEncoder.encode(donor.getPassword()));
         donorFromRepo.setEmail(donor.getEmail());
         donorFromRepo.setAddress(donor.getAddress());
@@ -54,12 +57,20 @@ public class DonorServiceImpl implements DonorService{
         donorFromRepo.setDateOfBirth(donor.getDateOfBirth());
         donorFromRepo.setGender(donor.getGender());
         donorFromRepo.setPhoneNumber(donor.getPhoneNumber());
+        
         return "Successfully updated";
     }
 
     @Override
     public String addRequest(String username, Request request) throws UsernameNotFoundException {
         Donor donorFromRepo = findByUsername(username);
+        if(request.getStatus() == null){
+            request.setStatus("pending");
+        }
+        if(request.getDate() == null){
+            request.setDate(LocalDate.now());
+        }
+        request.setDonor(donorFromRepo);
         List<Request> requests = donorFromRepo.getRequests();
         requests.add(request);
         donorFromRepo.setRequests(requests);

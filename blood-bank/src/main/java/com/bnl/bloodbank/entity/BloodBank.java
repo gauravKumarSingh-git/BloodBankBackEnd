@@ -3,6 +3,8 @@ package com.bnl.bloodbank.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,7 @@ public class BloodBank {
     private String address;
     private int mobileNumber;
     private LocalDate lastUpdated;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "bloodBank" ,cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JsonManagedReference
     private List<BloodGroup> bloodgroups;
 }

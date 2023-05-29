@@ -2,10 +2,13 @@ package com.bnl.bloodbank.entity;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +27,10 @@ public class Request {
     private long quantity;
     private LocalDate date;
     private String status;
+    @ManyToOne
+    @JsonBackReference(value = "donorReference")
+    private Donor donor;
+    @ManyToOne
+    @JsonBackReference
+    private Hospital hospital;
 }

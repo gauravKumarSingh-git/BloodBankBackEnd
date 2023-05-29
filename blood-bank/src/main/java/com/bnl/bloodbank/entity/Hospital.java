@@ -2,6 +2,8 @@ package com.bnl.bloodbank.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +31,7 @@ public class Hospital {
     private String city;
     private String address;
     private int mobileNumber;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "hospital" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Request> requests;
 }

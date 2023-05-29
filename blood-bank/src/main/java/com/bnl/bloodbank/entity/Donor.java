@@ -3,6 +3,8 @@ package com.bnl.bloodbank.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class Donor {
     private LocalDate dateOfBirth;
     private String gender;
     private int phoneNumber;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "donor" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "donorReference")
     private List<Request> requests;
 }
