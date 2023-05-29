@@ -32,6 +32,6 @@ public class Donor {
     private LocalDate dateOfBirth;
     private String gender;
     private int phoneNumber;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Request> requests;
 }

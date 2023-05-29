@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bnl.bloodbank.entity.Admin;
-import com.bnl.bloodbank.exception.UsernameAlredyPresentException;
+import com.bnl.bloodbank.exception.AlreadyPresentException;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
 import com.bnl.bloodbank.repository.AdminRepository;
 
@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService {
     public String registerAdmin(Admin admin) throws Exception{
         Optional<Admin> fromRepo = adminRepository.findByUsername(admin.getUsername());
         if(fromRepo.isPresent()){
-            throw new UsernameAlredyPresentException("Admin with Username " + admin.getUsername() + " is already present");
+            throw new AlreadyPresentException("Admin with Username " + admin.getUsername() + " is already present");
         }
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         adminRepository.save(admin);

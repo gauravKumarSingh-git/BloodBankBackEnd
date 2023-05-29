@@ -9,14 +9,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.bnl.bloodbank.exception.UsernameAlredyPresentException;
+import com.bnl.bloodbank.exception.AlreadyPresentException;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
     
-    @ExceptionHandler(UsernameAlredyPresentException.class)
-    public ResponseEntity<ErrorInfo> usernameAlreadyPresentExceptionHandler(UsernameAlredyPresentException exception){
+    @ExceptionHandler(AlreadyPresentException.class)
+    public ResponseEntity<ErrorInfo> usernameAlreadyPresentExceptionHandler(AlreadyPresentException exception){
         ErrorInfo errorInfo = new ErrorInfo();
         errorInfo.setErrorMessage(exception.getMessage());
         errorInfo.setErrorCode(HttpStatus.CONFLICT.value());
