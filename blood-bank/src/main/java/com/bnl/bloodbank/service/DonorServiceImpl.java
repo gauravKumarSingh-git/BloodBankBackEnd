@@ -74,7 +74,7 @@ public class DonorServiceImpl implements DonorService{
         List<Request> requests = donorFromRepo.getRequests();
         requests.add(request);
         donorFromRepo.setRequests(requests);
-        return "Request Successfully added";
+        return "Request Successfully added to : " + username;
     }
 
     
