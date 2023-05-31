@@ -30,7 +30,7 @@ public class Hospital {
     private String state;
     private String city;
     private String address;
-    private int mobileNumber;
+    private long mobileNumber;
     @OneToMany(mappedBy = "hospital" ,cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Request> requests;

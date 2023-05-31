@@ -13,7 +13,7 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     Optional<Hospital> findByUsername(String username);
 
-    Optional<Hospital> findByMobileNumber(int mobileNumber);
+    Optional<Hospital> findByMobileNumber(long mobileNumber);
 
     @Query("SELECT h.requests from Hospital h where h.username = :username")
     List<Request> findRequestsByUsername(String username);

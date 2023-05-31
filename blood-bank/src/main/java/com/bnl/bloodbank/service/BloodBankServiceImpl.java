@@ -81,7 +81,7 @@ public class BloodBankServiceImpl implements BloodBankService {
         return "Blood bank with ID : " + bloodBankId + " successfully deleted";
     }
 
-    private boolean isMobileNumberPresent(int mobileNumber){
+    private boolean isMobileNumberPresent(long mobileNumber){
         if(bloodBankRepository.findByMobileNumber(mobileNumber).isEmpty()){
             return false;
         }

@@ -33,7 +33,7 @@ public class Donor {
     private String address;
     private LocalDate dateOfBirth;
     private String gender;
-    private int phoneNumber;
+    private long phoneNumber;
     @OneToMany(mappedBy = "donor" ,cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "donorReference")
     private List<Request> requests;

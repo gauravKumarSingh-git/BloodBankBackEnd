@@ -47,16 +47,16 @@ public class DonorServiceImpl implements DonorService{
                 throw new AlreadyPresentException("Phone Number already present");
             }
         }
-        // donor.setPassword(passwordEncoder.encode(donor.getPassword()));
-        // donorRepository.save(donor);
-        donorFromRepo.setPassword(passwordEncoder.encode(donor.getPassword()));
-        donorFromRepo.setEmail(donor.getEmail());
-        donorFromRepo.setAddress(donor.getAddress());
-        donorFromRepo.setCity(donor.getCity());
-        donorFromRepo.setState(donor.getState());
-        donorFromRepo.setDateOfBirth(donor.getDateOfBirth());
-        donorFromRepo.setGender(donor.getGender());
-        donorFromRepo.setPhoneNumber(donor.getPhoneNumber());
+        donor.setPassword(passwordEncoder.encode(donor.getPassword()));
+        donorRepository.save(donor);
+        // donorFromRepo.setPassword(passwordEncoder.encode(donor.getPassword()));
+        // donorFromRepo.setEmail(donor.getEmail());
+        // donorFromRepo.setAddress(donor.getAddress());
+        // donorFromRepo.setCity(donor.getCity());
+        // donorFromRepo.setState(donor.getState());
+        // donorFromRepo.setDateOfBirth(donor.getDateOfBirth());
+        // donorFromRepo.setGender(donor.getGender());
+        // donorFromRepo.setPhoneNumber(donor.getPhoneNumber());
         
         return "Successfully updated";
     }
@@ -93,9 +93,9 @@ public class DonorServiceImpl implements DonorService{
     }
     
     @Override
-    public List<Request> getRequestsOrderByDate(String username) throws UsernameNotFoundException {
+    public List<Request> getRequests(String username) throws UsernameNotFoundException {
         if(!isUsernamePresent(username)) throw new UsernameNotFoundException("username " + username + " not found");
-        return donorRepository.findRequestsByUsernameOrderByDate(username);
+        return donorRepository.findRequestsByUsername(username);
     }
     
     
@@ -112,7 +112,7 @@ public class DonorServiceImpl implements DonorService{
         return true;
     }
 
-    private boolean isPhoneNumberPresent(int phoneNumber){
+    private boolean isPhoneNumberPresent(long phoneNumber){
         if(donorRepository.findByPhoneNumber(phoneNumber).isEmpty()){
             return false;
         }

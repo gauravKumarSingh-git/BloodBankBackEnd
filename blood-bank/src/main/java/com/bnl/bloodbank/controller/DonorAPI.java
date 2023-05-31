@@ -28,36 +28,80 @@ public class DonorAPI {
     @Autowired
     DonorService donorService;
 
+    /**
+     * To register a new donor
+     * @param donor
+     * @return ResponseEntity<String>
+     * @throws AlreadyPresentException
+     */
     @PostMapping("/registerDonor")
     public ResponseEntity<String> registerDonor(@RequestBody Donor donor) throws AlreadyPresentException {
         return new ResponseEntity<>(donorService.registerDonor(donor), HttpStatus.CREATED);
     }
-    
+
+    /**
+     * To update donor details which are already present in database
+     * @param donor
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     * @throws AlreadyPresentException
+     */
     @PutMapping("/updateDonor")
     public ResponseEntity<String> updateDonor(@RequestBody Donor donor) throws UsernameNotFoundException, AlreadyPresentException{
         return new ResponseEntity<>(donorService.updateDonor(donor), HttpStatus.OK);
     }
 
+    /**
+     * To add request of a donor by username
+     * @param username
+     * @param request
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @PatchMapping("/addRequest/{username}")
     public ResponseEntity<String> addRequest(@PathVariable String username, @RequestBody Request request) throws UsernameNotFoundException{
         return new ResponseEntity<>(donorService.addRequest(username, request), HttpStatus.OK);
     }
 
+    /**
+     * To delete donor by username
+     * @param username
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @DeleteMapping("/deleteDonor/{username}")
     public ResponseEntity<String> deleteDonor(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(donorService.deleteDonor(username), HttpStatus.OK);
     }
 
+    /**
+     * To find a donor by username
+     * @param username
+     * @return ResponseEntity<Donor>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/findByUsername/{username}")
     public ResponseEntity<Donor> findByUsername(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<Donor>(donorService.findByUsername(username), HttpStatus.OK);
     }
 
+    /**
+     * to get Requests made by a donor by username
+     * @param username
+     * @return ResponseEntity<List<Request>>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/getRequests/{username}")
-    public ResponseEntity<List<Request>> getRequestsOrderByDate(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(donorService.getRequestsOrderByDate(username), HttpStatus.OK);
+    public ResponseEntity<List<Request>> getRequests(@PathVariable String username) throws UsernameNotFoundException{
+        return new ResponseEntity<>(donorService.getRequests(username), HttpStatus.OK);
     }
 
+    /**
+     * To get pending requests of a donor
+     * @param username
+     * @return ResponseEntity<List<Request>>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/getPendingRequests/{username}")
     public ResponseEntity<List<Request>> getPendingRequests(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(donorService.getPendingRequests(username), HttpStatus.OK);

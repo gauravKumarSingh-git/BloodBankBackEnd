@@ -29,7 +29,7 @@ public class BloodBank {
     private String state;
     private String city;
     private String address;
-    private int mobileNumber;
+    private long mobileNumber;
     private LocalDate lastUpdated;
     @OneToMany(mappedBy = "bloodBank" ,cascade = CascadeType.MERGE, orphanRemoval = true)
     @JsonManagedReference

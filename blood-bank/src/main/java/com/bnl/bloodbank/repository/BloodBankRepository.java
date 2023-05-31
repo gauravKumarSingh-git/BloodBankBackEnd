@@ -8,6 +8,6 @@ import com.bnl.bloodbank.entity.BloodBank;
 
 public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
 
-    Optional<BloodBank> findByMobileNumber(int mobileNumber);
+    Optional<BloodBank> findByMobileNumber(long mobileNumber);
     
 }

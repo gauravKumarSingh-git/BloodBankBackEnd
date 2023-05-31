@@ -109,7 +109,7 @@ public class HospitalServiceImpl implements HospitalService {
         return true;
     }
 
-    private boolean isPhoneNumberPresent(int phoneNumber){
+    private boolean isPhoneNumberPresent(long phoneNumber){
         if(hospitalRepository.findByMobileNumber(phoneNumber).isEmpty()){
             return false;
         }
