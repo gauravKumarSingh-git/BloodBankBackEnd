@@ -27,36 +27,80 @@ public class HospitalAPI {
     @Autowired
     HospitalService hospitalService;
 
+    /**
+     * Register new Hospital
+     * @param hospital
+     * @return ResponseEntity<String>
+     * @throws AlreadyPresentException
+     */
     @PostMapping("/registerHospital")
     public ResponseEntity<String> registerHospital(@RequestBody Hospital hospital) throws AlreadyPresentException{
         return new ResponseEntity<>(hospitalService.registerHospital(hospital), HttpStatus.CREATED);
     }
 
+    /**
+     * Find Hospital details by username
+     * @param username
+     * @return ResponseEntity<Hospital>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/findByUsername/{username}")
     public ResponseEntity<Hospital> findByUsername(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.findByUsername(username), HttpStatus.OK);
-    } 
+    }
 
+    /**
+     * Update Hospital details
+     * @param hospital
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     * @throws AlreadyPresentException
+     */
     @PatchMapping("/updateHospital")
     public ResponseEntity<String> updateHospital(@RequestBody Hospital hospital) throws UsernameNotFoundException, AlreadyPresentException{
         return new ResponseEntity<>(hospitalService.updateHospital(hospital), HttpStatus.OK);
-    } 
+    }
 
+    /**
+     * Delete hospital details by username
+     * @param username
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @DeleteMapping("/deleteHospital/{username}")
     public ResponseEntity<String> deleteHospital(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.deleteHospital(username), HttpStatus.OK);
     }
 
+    /**
+     * Add requests made by hospital
+     * @param username
+     * @param request
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @PatchMapping("/addRequest/{username}")
     public ResponseEntity<String> addRequest(@PathVariable String username ,@RequestBody Request request) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.addRequest(username, request), HttpStatus.OK);
     }
 
+    /**
+     * Get requests made by Hospital by username
+     * @param username
+     * @return ResponseEntity<List<Request>>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/getRequests/{username}")
     public ResponseEntity<List<Request>> getRequests(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.getRequests(username), HttpStatus.OK);
     }
 
+    /**
+     * Get pending requests made by hospital
+     * @param username
+     * @return ResponseEntity<List<Request>>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/getPendingRequests/{username}")
     public ResponseEntity<List<Request>> getPendingRequests(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.getPendingRequests(username), HttpStatus.OK);

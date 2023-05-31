@@ -54,14 +54,8 @@ public class HospitalServiceImpl implements HospitalService {
                 throw new AlreadyPresentException("Phone Number already present");
             }
         }
-
-        fromRepo.setAddress(hospital.getAddress());
-        fromRepo.setCity(hospital.getCity());
-        fromRepo.setMobileNumber(hospital.getMobileNumber());
-        fromRepo.setName(hospital.getName());
         fromRepo.setPassword(passwordEncoder.encode(hospital.getPassword()));
-        fromRepo.setState(hospital.getState());
-
+        hospitalRepository.save(hospital);
         return "Successfully Updated hospital details with username : " + hospital.getUsername();
     }
 

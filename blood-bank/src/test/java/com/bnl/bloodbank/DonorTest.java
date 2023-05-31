@@ -41,7 +41,7 @@ public class DonorTest {
                     .email("donor@gmail.com")
                     .password("password")
                     .username("donor")
-                    .phoneNumber(1234567890)
+                    .phoneNumber(1234567890L)
                     .dateOfBirth(LocalDate.of(2000, 10, 11))
                     .requests( new ArrayList<Request>())
                     .build();
