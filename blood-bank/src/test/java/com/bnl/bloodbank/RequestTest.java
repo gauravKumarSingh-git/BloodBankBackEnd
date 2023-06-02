@@ -32,17 +32,28 @@ public class RequestTest {
                     .quantity(2)
                     .build();
 
+    /**
+     * To check addRequest is successful
+     */
     @Test
     void validAddReqeust() {
         Assertions.assertEquals(requestService.addRequest(request), "Request saved successfully");
     }
 
+    /**
+     * To check update status of request is successful if requestId is valid
+     * @throws NotPresentException
+     */
     @Test
     void validUpdateStatus() throws NotPresentException{
         Mockito.when(requestRepository.findById(request.getRequestId())).thenReturn(Optional.of(request));
         Assertions.assertEquals(requestService.updateStatus(request.getRequestId(), request.getStatus()), "Status for Request ID " + request.getRequestId() + " successfully updated");
     }
 
+    /**
+     * To check updateStatus throws NotPresentException if requestId is not valid
+     * @throws NotPresentException
+     */
     @Test
     void invalidUpdateStatus() throws NotPresentException{
         Mockito.when(requestRepository.findById(request.getRequestId())).thenReturn(Optional.empty());
@@ -53,12 +64,20 @@ public class RequestTest {
         Assertions.assertEquals(ex.getMessage(), "Request for id " + request.getRequestId() + " not found");
     }
 
+    /**
+     * to check deleteRequest is successful if requestId is valid
+     * @throws NotPresentException
+     */
     @Test
     void validDeleteRequest() throws NotPresentException{
         Mockito.when(requestRepository.findById(request.getRequestId())).thenReturn(Optional.of(request));
         Assertions.assertEquals(requestService.deleteRequest(request.getRequestId()), "Request with ID " + request.getRequestId() + " successfully deleted");
     }
 
+    /**
+     * To check deleteRequest throws NotPresentException if requestId is not valid
+     * @throws NotPresentException
+     */
     @Test
     void invalidDeleteRequest() throws NotPresentException{
         Mockito.when(requestRepository.findById(request.getRequestId())).thenReturn(Optional.empty());

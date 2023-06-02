@@ -53,6 +53,10 @@ public class DonorTest {
                     .quantity(2)
                     .build();
 
+    /**
+     * To check donor registration is successful if username is unique and phone number does not belong to any other donor
+     * @throws AlreadyPresentException
+     */
     @Test
     void validDonorRegistration() throws AlreadyPresentException{
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.empty());
@@ -60,6 +64,10 @@ public class DonorTest {
         Assertions.assertEquals(donorService.registerDonor(donor) ,"Donor with username : " + donor.getUsername() + " successfully registered");
     }
 
+    /**
+     * To check registerDonor throws AlreadyPresentException if username already present
+     * @throws AlreadyPresentException
+     */
     @Test
     void invalidDonorRegistrtionUsernameAlreadyPresent() throws  AlreadyPresentException{
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
@@ -70,6 +78,10 @@ public class DonorTest {
         Assertions.assertEquals(ex.getMessage(), "Username alredy present");
     }
 
+    /**
+     * To check registerDonor throws AlreadyPresentException if Mobile number is registered with some other donor
+     * @throws AlreadyPresentException
+     */
     @Test
     void invalidDonorRegistrationPhoneNumberAlreadyPresent() throws AlreadyPresentException{
         Mockito.when(donorRepository.findByPhoneNumber(donor.getPhoneNumber())).thenReturn(Optional.of(donor));
@@ -80,24 +92,41 @@ public class DonorTest {
         Assertions.assertEquals(ex.getMessage(), "Phone number already present");
     }
 
+    /**
+     * To check updateDonor is successful if username is valid
+     * @throws UsernameNotFoundException
+     * @throws AlreadyPresentException
+     */
     @Test
     void validUpdateDonor() throws UsernameNotFoundException, AlreadyPresentException {
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
         Assertions.assertEquals(donorService.updateDonor(donor), "Successfully updated");
     }
 
+    /**
+     * To check addRequest is successful if username is valid
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validAddRequest() throws UsernameNotFoundException{
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
         Assertions.assertEquals(donorService.addRequest(donor.getUsername(), request), "Request Successfully added to : " + donor.getUsername());
     }
 
+    /**
+     * To check deleteDonor is successful if username is valid
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validDonorDelete() throws UsernameNotFoundException {
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
         Assertions.assertEquals(donorService.deleteDonor(donor.getUsername()), "Donor with username : " + donor.getUsername() + " successfully deleted");
     }
 
+    /**
+     * To check findByUsername throws UsernameNotPresentException if username is not present in database.
+     * @throws UsernameNotFoundException
+     */
     @Test
     void invalidFindByUsername() throws UsernameNotFoundException {
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.empty());
@@ -107,6 +136,10 @@ public class DonorTest {
         );
     }
 
+    /**
+     * To check getRequest is successful if username is valid
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validGetRequest() throws UsernameNotFoundException {
         Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));

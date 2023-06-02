@@ -22,22 +22,47 @@ public class AdminAPI {
 
     @Autowired
     AdminService adminService;
-    
+
+    /**
+     * To register new admin
+     * @param admin
+     * @return ResponseEntity<String>
+     * @throws Exception
+     */
     @PostMapping("/registerAdmin")
     public ResponseEntity<String> registerAdmin(@RequestBody Admin admin) throws Exception{
         return new ResponseEntity<>(adminService.registerAdmin(admin), HttpStatus.CREATED);
     }
 
+    /**
+     * Get admin details by username
+     * @param username
+     * @return ResponseEntity<Admin>
+     * @throws UsernameNotFoundException
+     */
     @GetMapping("/findByUsername/{username}")
     public ResponseEntity<Admin> findByUsername(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(adminService.findByUsername(username), HttpStatus.OK);
     }
 
+    /**
+     * Update password of admin by username
+     * @param username
+     * @param password
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @PatchMapping("/updatePassword/{username}/{password}")
     public ResponseEntity<String> updatePassword(@PathVariable String username, @PathVariable String password) throws UsernameNotFoundException {
         return new ResponseEntity<>(adminService.updatePassword(username, password), HttpStatus.OK);
     }
 
+    /**
+     * Delete admin by username
+     * @param username
+     * @return ResponseEntity<String>
+     * @throws UsernameNotFoundException
+     */
     @DeleteMapping("/deleteAdmin/{username}")
     public ResponseEntity<String> deleteAdmin(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(adminService.deleteAdmin(username), HttpStatus.OK);

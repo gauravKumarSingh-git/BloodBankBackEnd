@@ -50,12 +50,20 @@ public class BloodBankTest {
                     .quantity(10)
                     .build();
 
+    /**
+     * To check new Blood bank is successfully created if unique mobile number is provided.
+     * @throws AlreadyPresentException
+     */
     @Test
     void validBloodBankRegistration() throws AlreadyPresentException{
         Mockito.when(bloodBankRepository.findByMobileNumber(bloodBank.getMobileNumber())).thenReturn(Optional.empty());
         Assertions.assertEquals(bloodBankService.addBloodBank(bloodBank), "Blood Bank " + bloodBank.getName() + " successfully saved");
     }
 
+    /**
+     * To check registerBloodBank throws AlreadyPresentException if mobile number is associated with some other user
+     * @throws AlreadyPresentException
+     */
     @Test
     void invalidBloodBankRegistration() throws AlreadyPresentException{
         Mockito.when(bloodBankRepository.findByMobileNumber(bloodBank.getMobileNumber())).thenReturn(Optional.of(bloodBank));
@@ -66,12 +74,20 @@ public class BloodBankTest {
         Assertions.assertEquals(ex.getMessage(), "Mobile number already present");
     }
 
+    /**
+     * To check if BloodBank details is returned if valid bloodBankId is provided
+     * @throws NotPresentException
+     */
     @Test
     void validGetBloodBank() throws NotPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.of(bloodBank));
         Assertions.assertEquals(bloodBankService.getBloodBank(bloodBank.getBloodBankId()), bloodBank);
     }
 
+    /**
+     * To check getBloodBank throws NotPresentException if bloodBankId provided is invalid
+     * @throws NotPresentException
+     */
     @Test
     void invalidGetBloodBank() throws NotPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.empty());
@@ -82,12 +98,22 @@ public class BloodBankTest {
         Assertions.assertEquals(ex.getMessage(), "Blood Bank with given ID not present");
     }
 
+    /**
+     * To check getBloodGroups returns bloodGroups if valid bloodBankId is provided
+     * @throws NotPresentException
+     */
     @Test
     void validGetBloodGroups() throws NotPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.of(bloodBank));
         Assertions.assertEquals(bloodBankService.getBloodGroups(bloodBank.getBloodBankId()), bloodBank.getBloodgroups());
     }
 
+    /**
+     * To check updateBloodBank is successful if bloodBankId is present in database and
+     * mobileNumber is not associated with another user
+     * @throws NotPresentException
+     * @throws AlreadyPresentException
+     */
     @Test
     void validUpdateBloodBank() throws NotPresentException, AlreadyPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.of(bloodBank));
@@ -95,14 +121,22 @@ public class BloodBankTest {
         Assertions.assertEquals(bloodBankService.updateBloodBank(bloodBank), "Blood Bank " + bloodBank.getName() + " successfully updated");
     }
 
+    /**
+     * To check the addition of blood group to a blood bank if bloodBankId is valid
+     * @throws NotPresentException
+     */
     @Test
     void validAddBloodGroup() throws NotPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.of(bloodBank));
         Assertions.assertEquals(bloodBankService.addBloodGroup(bloodBank.getBloodBankId(), bloodGroup) ,"Blood Group successfully added to blood bank : " + bloodBank.getName());
     }
 
+    /**
+     * To check deleteBloodGroup is successful if bloodBankId is valid
+     * @throws NotPresentException
+     */
     @Test
-    void validDeleteBloodGroup() throws NotPresentException{
+    void validDeleteBloodBank() throws NotPresentException{
         Mockito.when(bloodBankRepository.findById(bloodBank.getBloodBankId())).thenReturn(Optional.of(bloodBank));
         Assertions.assertEquals(bloodBankService.deleteBloodBank(bloodBank.getBloodBankId()), "Blood bank with ID : " + bloodBank.getBloodBankId() + " successfully deleted");
     }

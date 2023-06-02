@@ -24,26 +24,57 @@ public class BloodGroupAPI {
     @Autowired
     BloodGroupService bloodGroupService;
 
+    /**
+     * Add blood group details
+     * @param bloodGroup
+     * @return ResponseEntity<String>
+     * @throws AlreadyPresentException
+     */
     @PostMapping("/addBloodGroup")
     public ResponseEntity<String> addBloodGroup(@RequestBody BloodGroup bloodGroup) throws AlreadyPresentException{
         return new ResponseEntity<>(bloodGroupService.addBloodGroup(bloodGroup), HttpStatus.CREATED);
-    } 
+    }
 
+    /**
+     * get blood group details by bloodGroupId
+     * @param bloodGroupId
+     * @return ResponseEntity<BloodGroup>
+     * @throws NotPresentException
+     */
     @GetMapping("/getBloodGroup/{bloodGroupId}")
     public ResponseEntity<BloodGroup> getBloodGroup(@PathVariable long bloodGroupId) throws NotPresentException{
         return new ResponseEntity<>(bloodGroupService.getBloodGroup(bloodGroupId), HttpStatus.OK);
     }
 
+    /**
+     * Delete blood group details
+     * @param bloodGroupId
+     * @return ResponseEntity<String>
+     * @throws NotPresentException
+     */
     @DeleteMapping("/deleteBloodGroup/{bloodGroupId}")
     public ResponseEntity<String> deleteBloodGroup(@PathVariable long bloodGroupId) throws NotPresentException{
         return new ResponseEntity<>(bloodGroupService.deleteBloodGroup(bloodGroupId), HttpStatus.OK);
     }
 
+    /**
+     * Update blood group quantity
+     * @param bloodGroup
+     * @param quantity
+     * @return ResponseEntity<String>
+     * @throws NotPresentException
+     */
     @PatchMapping("/updateQuantity/{bloodGroup}/{quantity}")
     public ResponseEntity<String> updateQuantity(@PathVariable String bloodGroup, @PathVariable long quantity) throws NotPresentException{
         return new ResponseEntity<>(bloodGroupService.updateQuantity(bloodGroup, quantity), HttpStatus.OK);
     }
 
+    /**
+     * Get blood group details by bloodGroup
+     * @param bloodGroup
+     * @return ResponseEntity<BloodGroup>
+     * @throws NotPresentException
+     */
     @GetMapping("/getByBloodGroup/{bloodGroup}")
     public ResponseEntity<BloodGroup> getByBloodGroup(@PathVariable String bloodGroup) throws NotPresentException{
         return new ResponseEntity<>(bloodGroupService.getByBloodGroup(bloodGroup), HttpStatus.OK);

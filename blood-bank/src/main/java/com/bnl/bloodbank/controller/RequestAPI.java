@@ -22,16 +22,34 @@ public class RequestAPI {
     @Autowired
     RequestService requestService;
 
+    /**
+     * Add request details
+     * @param request
+     * @return ResponseEntity<String>
+     */
     @PostMapping("/addRequest")
     public ResponseEntity<String> addRequest(@RequestBody Request request){
         return new ResponseEntity<>(requestService.addRequest(request), HttpStatus.CREATED);
     }
 
+    /**
+     * Update request status
+     * @param requestId
+     * @param status
+     * @return ResponseEntity<String>
+     * @throws NotPresentException
+     */
     @PatchMapping("/updateStatus/{requestId}/{status}")
     public ResponseEntity<String> udpateStatus(@PathVariable long requestId ,@PathVariable String status) throws NotPresentException{
         return new ResponseEntity<>(requestService.updateStatus(requestId, status), HttpStatus.OK);
     }
 
+    /**
+     * Delete request
+     * @param requestId
+     * @return ResponseEntity<String>
+     * @throws NotPresentException
+     */
     @DeleteMapping("/deleteRequest/{requestId}")
     public ResponseEntity<String> deleteRequest(@PathVariable long requestId) throws NotPresentException{
         return new ResponseEntity<>(requestService.deleteRequest(requestId), HttpStatus.OK);

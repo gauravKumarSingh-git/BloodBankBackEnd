@@ -50,6 +50,10 @@ public class HospitalTest {
                     .quantity(2)
                     .build();
 
+    /**
+     * To check hospital is registered if username is unique and mobile number is not registered to any other user
+     * @throws AlreadyPresentException
+     */
     @Test
     void validRegisterHospital() throws AlreadyPresentException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.empty());
@@ -57,6 +61,10 @@ public class HospitalTest {
         Assertions.assertEquals(hospitalService.registerHospital(hospital), "Hospital with username : " + hospital.getUsername() + " successfully registered");
     }
 
+    /**
+     * To check if registerHospital throws AlreadyPresentException if username is already present
+     * @throws AlreadyPresentException
+     */
     @Test
     void invalidRegisterHospitalUsernameAlreadyPresent() throws AlreadyPresentException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
@@ -67,6 +75,10 @@ public class HospitalTest {
         Assertions.assertEquals(ex.getMessage(), "Username alredy present");
     }
 
+    /**
+     * To check registerHospital throws AlreadyPresentException if mobile number is already present
+     * @throws AlreadyPresentException
+     */
     @Test
     void invalidRegisterHospitalMobileNumberAlreadyPresent() throws AlreadyPresentException{
         Mockito.when(hospitalRepository.findByMobileNumber(hospital.getMobileNumber())).thenReturn(Optional.of(hospital));
@@ -77,12 +89,20 @@ public class HospitalTest {
         Assertions.assertEquals(ex.getMessage(), "Phone number already present");
     }
 
+    /**
+     * To check findByUsername is successful if username is present in database
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validFindByUsername() throws UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
         Assertions.assertEquals(hospital, hospitalService.findByUsername(hospital.getUsername()));
     }
 
+    /**
+     * To check findByUsername throws UsernameNotFoundException if username is not present in database
+     * @throws UsernameNotFoundException
+     */
     @Test
     void invalidFindByUsername() throws UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.empty());
@@ -92,24 +112,41 @@ public class HospitalTest {
         );
     }
 
+    /**
+     * To check updateHospital is successful if username is present in database
+     * @throws AlreadyPresentException
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validUpdateHospital() throws AlreadyPresentException, UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
         Assertions.assertEquals(hospitalService.updateHospital(hospital), "Successfully Updated hospital details with username : " + hospital.getUsername());
     }
 
+    /**
+     * To check deleteHospital is successful if username is present in database
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validDeleteHospital() throws UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
         Assertions.assertEquals(hospitalService.deleteHospital(hospital.getUsername()), "Hospital with username: " + hospital.getUsername() + " successfully deleted");
     }
 
+    /**
+     * To check addRequest is successful if username is valid
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validAddRequest() throws UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
         Assertions.assertEquals(hospitalService.addRequest(hospital.getUsername(), request), "Request succssfully added to : " + hospital.getUsername());
     }
 
+    /**
+     * To check getReqeusts is successful if username is valid
+     * @throws UsernameNotFoundException
+     */
     @Test
     void validGetReqeusts() throws UsernameNotFoundException{
         Mockito.when(hospitalRepository.findByUsername(hospital.getUsername())).thenReturn(Optional.of(hospital));
