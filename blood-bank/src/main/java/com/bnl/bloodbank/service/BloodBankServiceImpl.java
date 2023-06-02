@@ -52,13 +52,13 @@ public class BloodBankServiceImpl implements BloodBankService {
                 throw new AlreadyPresentException("Mobile Number already present");
             }
         }
-
-        fromRepo.setLastUpdated(LocalDate.now());
-        fromRepo.setName(bloodBank.getName());
-        fromRepo.setState(bloodBank.getState());
-        fromRepo.setCity(bloodBank.getCity());
-        fromRepo.setAddress(bloodBank.getAddress());
-        fromRepo.setMobileNumber(bloodBank.getMobileNumber());
+        bloodBankRepository.save(bloodBank);
+//        fromRepo.setLastUpdated(LocalDate.now());
+//        fromRepo.setName(bloodBank.getName());
+//        fromRepo.setState(bloodBank.getState());
+//        fromRepo.setCity(bloodBank.getCity());
+//        fromRepo.setAddress(bloodBank.getAddress());
+//        fromRepo.setMobileNumber(bloodBank.getMobileNumber());
 
         return "Blood Bank " + bloodBank.getName() + " successfully updated";
     }

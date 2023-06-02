@@ -32,7 +32,7 @@ public class DonorTest {
     @InjectMocks
     DonorService donorService = new DonorServiceImpl();
 
-    private static Donor donor = Donor.builder()
+        private static Donor donor = Donor.builder()
                     .donorId(1)
                     .address("DTP")
                     .city("Bangalore")
