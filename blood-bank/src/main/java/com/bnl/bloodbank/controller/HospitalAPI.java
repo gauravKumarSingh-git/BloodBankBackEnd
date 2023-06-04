@@ -2,9 +2,11 @@ package com.bnl.bloodbank.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +24,7 @@ import com.bnl.bloodbank.service.HospitalService;
 
 @RestController
 @RequestMapping("/hospital")
+@Validated
 public class HospitalAPI {
     
     @Autowired
@@ -34,7 +37,7 @@ public class HospitalAPI {
      * @throws AlreadyPresentException
      */
     @PostMapping("/registerHospital")
-    public ResponseEntity<String> registerHospital(@RequestBody Hospital hospital) throws AlreadyPresentException{
+    public ResponseEntity<String> registerHospital(@Valid @RequestBody Hospital hospital) throws AlreadyPresentException{
         return new ResponseEntity<>(hospitalService.registerHospital(hospital), HttpStatus.CREATED);
     }
 
@@ -57,7 +60,7 @@ public class HospitalAPI {
      * @throws AlreadyPresentException
      */
     @PatchMapping("/updateHospital")
-    public ResponseEntity<String> updateHospital(@RequestBody Hospital hospital) throws UsernameNotFoundException, AlreadyPresentException{
+    public ResponseEntity<String> updateHospital(@Valid @RequestBody Hospital hospital) throws UsernameNotFoundException, AlreadyPresentException{
         return new ResponseEntity<>(hospitalService.updateHospital(hospital), HttpStatus.OK);
     }
 
@@ -80,7 +83,7 @@ public class HospitalAPI {
      * @throws UsernameNotFoundException
      */
     @PatchMapping("/addRequest/{username}")
-    public ResponseEntity<String> addRequest(@PathVariable String username ,@RequestBody Request request) throws UsernameNotFoundException{
+    public ResponseEntity<String> addRequest(@PathVariable String username ,@Valid @RequestBody Request request) throws UsernameNotFoundException{
         return new ResponseEntity<>(hospitalService.addRequest(username, request), HttpStatus.OK);
     }
 

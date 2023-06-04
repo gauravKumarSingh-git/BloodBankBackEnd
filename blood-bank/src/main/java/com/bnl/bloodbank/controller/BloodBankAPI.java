@@ -2,9 +2,11 @@ package com.bnl.bloodbank.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +24,7 @@ import com.bnl.bloodbank.service.BloodBankService;
 
 @RestController
 @RequestMapping("/bloodbank")
+@Validated
 public class BloodBankAPI {
     
     @Autowired
@@ -34,7 +37,7 @@ public class BloodBankAPI {
      * @throws AlreadyPresentException
      */
     @PostMapping("/addBloodBank")
-    public ResponseEntity<String> addBloodBank(@RequestBody BloodBank bloodBank) throws AlreadyPresentException{
+    public ResponseEntity<String> addBloodBank(@Valid @RequestBody BloodBank bloodBank) throws AlreadyPresentException{
         return new ResponseEntity<>(bloodBankService.addBloodBank(bloodBank), HttpStatus.CREATED);
     }
 
@@ -68,7 +71,7 @@ public class BloodBankAPI {
      * @throws AlreadyPresentException
      */
     @PatchMapping("/updateBloodBank")
-    public ResponseEntity<String> updateBloodBank(@RequestBody BloodBank bloodBank) throws NotPresentException, AlreadyPresentException{
+    public ResponseEntity<String> updateBloodBank(@Valid @RequestBody BloodBank bloodBank) throws NotPresentException, AlreadyPresentException{
         return new ResponseEntity<>(bloodBankService.updateBloodBank(bloodBank), HttpStatus.OK);
     }
 
@@ -80,7 +83,7 @@ public class BloodBankAPI {
      * @throws NotPresentException
      */
     @PatchMapping("/addBloodGroup/{bloodBankId}")
-    public ResponseEntity<String> addBloodGroup(@PathVariable long bloodBankId, @RequestBody BloodGroup bloodGroup) throws NotPresentException{
+    public ResponseEntity<String> addBloodGroup(@PathVariable long bloodBankId,@Valid @RequestBody BloodGroup bloodGroup) throws NotPresentException{
         return new ResponseEntity<>(bloodBankService.addBloodGroup(bloodBankId, bloodGroup), HttpStatus.OK);
     }
 

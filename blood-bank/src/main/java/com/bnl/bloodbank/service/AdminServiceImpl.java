@@ -30,7 +30,7 @@ public class AdminServiceImpl implements AdminService {
             throw new AlreadyPresentException("Admin with Username " + admin.getUsername() + " is already present");
         }
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        adminRepository.save(admin);
+        adminRepository.saveAndFlush(admin);
         return "Admin with username " + admin.getUsername() + " successfully created";
     }
 

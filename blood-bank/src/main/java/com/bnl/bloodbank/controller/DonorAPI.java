@@ -2,9 +2,11 @@ package com.bnl.bloodbank.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +25,7 @@ import com.bnl.bloodbank.service.DonorService;
 
 @RestController
 @RequestMapping("/donor")
+@Validated
 public class DonorAPI {
 
     @Autowired
@@ -35,7 +38,7 @@ public class DonorAPI {
      * @throws AlreadyPresentException
      */
     @PostMapping("/registerDonor")
-    public ResponseEntity<String> registerDonor(@RequestBody Donor donor) throws AlreadyPresentException {
+    public ResponseEntity<String> registerDonor(@Valid @RequestBody Donor donor) throws AlreadyPresentException {
         return new ResponseEntity<>(donorService.registerDonor(donor), HttpStatus.CREATED);
     }
 
@@ -47,7 +50,7 @@ public class DonorAPI {
      * @throws AlreadyPresentException
      */
     @PutMapping("/updateDonor")
-    public ResponseEntity<String> updateDonor(@RequestBody Donor donor) throws UsernameNotFoundException, AlreadyPresentException{
+    public ResponseEntity<String> updateDonor(@Valid @RequestBody Donor donor) throws UsernameNotFoundException, AlreadyPresentException{
         return new ResponseEntity<>(donorService.updateDonor(donor), HttpStatus.OK);
     }
 
@@ -59,7 +62,7 @@ public class DonorAPI {
      * @throws UsernameNotFoundException
      */
     @PatchMapping("/addRequest/{username}")
-    public ResponseEntity<String> addRequest(@PathVariable String username, @RequestBody Request request) throws UsernameNotFoundException{
+    public ResponseEntity<String> addRequest(@PathVariable String username,@Valid @RequestBody Request request) throws UsernameNotFoundException{
         return new ResponseEntity<>(donorService.addRequest(username, request), HttpStatus.OK);
     }
 

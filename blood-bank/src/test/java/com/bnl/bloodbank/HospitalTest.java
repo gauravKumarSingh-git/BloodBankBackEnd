@@ -110,6 +110,7 @@ public class HospitalTest {
                 UsernameNotFoundException.class,
                 () -> hospitalService.findByUsername(hospital.getUsername())
         );
+        Assertions.assertEquals(ex.getMessage(), "Username " + hospital.getUsername() + " not found");
     }
 
     /**

@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -134,6 +133,7 @@ public class DonorTest {
                 UsernameNotFoundException.class,
                 () -> donorService.findByUsername(donor.getUsername())
         );
+        Assertions.assertEquals(ex.getMessage(), "Username " + donor.getUsername() + " not found");
     }
 
     /**

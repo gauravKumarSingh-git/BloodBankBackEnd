@@ -1,6 +1,5 @@
 package com.bnl.bloodbank;
 
-import com.bnl.bloodbank.entity.BloodGroup;
 import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.repository.RequestRepository;
@@ -12,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.util.Assert;
 
 import java.util.Optional;
 

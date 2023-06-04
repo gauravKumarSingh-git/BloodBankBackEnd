@@ -1,6 +1,5 @@
 package com.bnl.bloodbank;
 
-import com.bnl.bloodbank.controller.BloodBankAPI;
 import com.bnl.bloodbank.entity.BloodBank;
 import com.bnl.bloodbank.entity.BloodGroup;
 import com.bnl.bloodbank.exception.AlreadyPresentException;
@@ -14,9 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

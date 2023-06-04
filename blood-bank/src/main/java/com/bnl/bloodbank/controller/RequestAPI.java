@@ -1,8 +1,10 @@
 package com.bnl.bloodbank.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import com.bnl.bloodbank.service.RequestService;
 
 @RestController
 @RequestMapping("/request")
+@Validated
 public class RequestAPI {
     
     @Autowired
@@ -28,7 +31,7 @@ public class RequestAPI {
      * @return ResponseEntity<String>
      */
     @PostMapping("/addRequest")
-    public ResponseEntity<String> addRequest(@RequestBody Request request){
+    public ResponseEntity<String> addRequest(@Valid @RequestBody Request request){
         return new ResponseEntity<>(requestService.addRequest(request), HttpStatus.CREATED);
     }
 

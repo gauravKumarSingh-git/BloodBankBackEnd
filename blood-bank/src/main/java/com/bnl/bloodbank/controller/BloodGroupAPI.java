@@ -1,8 +1,10 @@
 package com.bnl.bloodbank.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +21,7 @@ import com.bnl.bloodbank.service.BloodGroupService;
 
 @RestController
 @RequestMapping("/bloodgroup")
+@Validated
 public class BloodGroupAPI {
 
     @Autowired
@@ -31,7 +34,7 @@ public class BloodGroupAPI {
      * @throws AlreadyPresentException
      */
     @PostMapping("/addBloodGroup")
-    public ResponseEntity<String> addBloodGroup(@RequestBody BloodGroup bloodGroup) throws AlreadyPresentException{
+    public ResponseEntity<String> addBloodGroup(@Valid @RequestBody BloodGroup bloodGroup) throws AlreadyPresentException{
         return new ResponseEntity<>(bloodGroupService.addBloodGroup(bloodGroup), HttpStatus.CREATED);
     }
 
