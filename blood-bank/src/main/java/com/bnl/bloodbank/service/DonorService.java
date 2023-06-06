@@ -6,6 +6,7 @@ import com.bnl.bloodbank.entity.Donor;
 import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.AlreadyPresentException;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
+import com.bnl.bloodbank.utility.UserRequestsResponse;
 
 public interface DonorService {
 
@@ -69,5 +70,10 @@ public interface DonorService {
      * @throws UsernameNotFoundException
      */
     public List<Request> getPendingRequests(String username) throws UsernameNotFoundException;
-    
+
+    /**
+     * Get pending requests and user details
+     * @return
+     */
+    List<UserRequestsResponse> getUserAndRequestDetails();
 }

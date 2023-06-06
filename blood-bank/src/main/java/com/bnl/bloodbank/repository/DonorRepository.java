@@ -3,6 +3,7 @@ package com.bnl.bloodbank.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.bnl.bloodbank.utility.UserRequestsResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,5 +21,7 @@ public interface DonorRepository extends JpaRepository<Donor, Long>{
 
     @Query("SELECT r from Donor d inner join Request r on d.donorId = r.donor.donorId where d.username = :username and r.status = 'pending'")
     List<Request> findPendingRequestsByUsername(String username);
-    
+
+    @Query("SELECT d from Donor d inner join Request r on d.donorId = r.donor.donorId where r.status = 'pending'")
+    List<Donor> getUserAndRequestDetails();
 }

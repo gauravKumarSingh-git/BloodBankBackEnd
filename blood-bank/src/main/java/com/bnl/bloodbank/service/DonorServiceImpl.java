@@ -1,9 +1,11 @@
 package com.bnl.bloodbank.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.bnl.bloodbank.utility.UserRequestsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -104,7 +106,33 @@ public class DonorServiceImpl implements DonorService{
         if(!isUsernamePresent(username)) throw new UsernameNotFoundException("username " + username + " not found");
         return donorRepository.findPendingRequestsByUsername(username);
     }
-    
+
+    @Override
+    public List<UserRequestsResponse> getUserAndRequestDetails() {
+        List<Donor> response = donorRepository.getUserAndRequestDetails();
+        List<UserRequestsResponse> ret = new ArrayList<>();
+        response.stream().forEach(d -> {
+            d.getRequests().stream()
+                    .filter(req -> req.getStatus().equalsIgnoreCase("pending"))
+                    .forEach(dr-> {
+                        UserRequestsResponse r = UserRequestsResponse.builder()
+                                .username(d.getUsername())
+                                .email(d.getEmail())
+                                .state(d.getState())
+                                .city(d.getCity())
+                                .address(d.getAddress())
+                                .phoneNumber(d.getPhoneNumber())
+                                .bloodGroup(dr.getBloodGroup())
+                                .quantity(dr.getQuantity())
+                                .date(dr.getDate())
+                                .status(dr.getStatus())
+                                .build();
+                        ret.add(r);
+                    });
+        });
+        return ret;
+    }
+
     private boolean isUsernamePresent(String username){
         if(donorRepository.findByUsername(username).isEmpty()){
             return false;

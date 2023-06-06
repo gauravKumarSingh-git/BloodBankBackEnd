@@ -2,6 +2,7 @@ package com.bnl.bloodbank.controller;
 
 import java.util.List;
 
+import com.bnl.bloodbank.utility.UserRequestsResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,6 +109,15 @@ public class DonorAPI {
     @GetMapping("/getPendingRequests/{username}")
     public ResponseEntity<List<Request>> getPendingRequests(@PathVariable String username) throws UsernameNotFoundException{
         return new ResponseEntity<>(donorService.getPendingRequests(username), HttpStatus.OK);
+    }
+
+    /**
+     * To get all the pending requests and donor details
+     * @return List<UserRequestsResponse>
+     */
+    @GetMapping("/getUserAndRequestDetails")
+    public ResponseEntity<List<UserRequestsResponse>> getUserAndRequestDetails(){
+        return new ResponseEntity<>(donorService.getUserAndRequestDetails(), HttpStatus.OK);
     }
 
 

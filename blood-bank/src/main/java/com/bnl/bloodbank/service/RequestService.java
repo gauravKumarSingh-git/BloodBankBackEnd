@@ -3,6 +3,8 @@ package com.bnl.bloodbank.service;
 import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.NotPresentException;
 
+import java.util.List;
+
 public interface RequestService {
 
     /**
@@ -28,5 +30,10 @@ public interface RequestService {
      * @throws NotPresentException
      */
     String deleteRequest(long requestId) throws NotPresentException;
-    
+
+    /**
+     * Get all requests present in database
+     * @return
+     */
+    List<Request> getAllRequests();
 }

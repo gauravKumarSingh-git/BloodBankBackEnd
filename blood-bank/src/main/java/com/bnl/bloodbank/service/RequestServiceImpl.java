@@ -1,6 +1,7 @@
 package com.bnl.bloodbank.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,10 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.delete(request);
         return "Request with ID " + requestId + " successfully deleted";
     }
-    
+
+    @Override
+    public List<Request> getAllRequests() {
+        return requestRepository.findAll();
+    }
+
 }
