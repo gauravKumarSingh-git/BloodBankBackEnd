@@ -1,10 +1,12 @@
-package com.bnl.bloodbank.service;
+package com.bnl.bloodbank.serviceImpl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.bnl.bloodbank.exception.NotPresentException;
+import com.bnl.bloodbank.service.DonorService;
 import com.bnl.bloodbank.utility.UserRequestsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +22,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class DonorServiceImpl implements DonorService{
+public class DonorServiceImpl implements DonorService {
 
     @Autowired
     DonorRepository donorRepository;
@@ -42,8 +44,8 @@ public class DonorServiceImpl implements DonorService{
     }
 
     @Override
-    public String updateDonor(Donor donor) throws UsernameNotFoundException, AlreadyPresentException {
-        Donor donorFromRepo = findByUsername(donor.getUsername());
+    public String updateDonor(Donor donor) throws NotPresentException, AlreadyPresentException {
+        Donor donorFromRepo = findById(donor.getDonorId());
         if(isPhoneNumberPresent(donor.getPhoneNumber())){
             if(donorFromRepo.getPhoneNumber() != donor.getPhoneNumber()){
                 throw new AlreadyPresentException("Phone Number already present");
@@ -51,21 +53,13 @@ public class DonorServiceImpl implements DonorService{
         }
         donor.setPassword(passwordEncoder.encode(donor.getPassword()));
         donorRepository.save(donor);
-        // donorFromRepo.setPassword(passwordEncoder.encode(donor.getPassword()));
-        // donorFromRepo.setEmail(donor.getEmail());
-        // donorFromRepo.setAddress(donor.getAddress());
-        // donorFromRepo.setCity(donor.getCity());
-        // donorFromRepo.setState(donor.getState());
-        // donorFromRepo.setDateOfBirth(donor.getDateOfBirth());
-        // donorFromRepo.setGender(donor.getGender());
-        // donorFromRepo.setPhoneNumber(donor.getPhoneNumber());
         
         return "Successfully updated";
     }
 
     @Override
-    public String addRequest(String username, Request request) throws UsernameNotFoundException {
-        Donor donorFromRepo = findByUsername(username);
+    public String addRequest(long id, Request request) throws NotPresentException {
+        Donor donorFromRepo = findById(id);
         if(request.getStatus() == null){
             request.setStatus("pending");
         }
@@ -76,35 +70,35 @@ public class DonorServiceImpl implements DonorService{
         List<Request> requests = donorFromRepo.getRequests();
         requests.add(request);
         donorFromRepo.setRequests(requests);
-        return "Request Successfully added to : " + username;
+        return "Request Successfully added to donor with ID: " + id;
     }
 
     
     @Override
-    public String deleteDonor(String username) throws UsernameNotFoundException {
-        Donor donorFromRepo = findByUsername(username);
+    public String deleteDonor(long id) throws NotPresentException {
+        Donor donorFromRepo = findById(id);
         donorRepository.delete(donorFromRepo);
-        return "Donor with username : " + username + " successfully deleted";
+        return "Donor with ID: " + id  + " successfully deleted";
     }
 
     
     @Override
-    public Donor findByUsername(String username) throws UsernameNotFoundException{
-        Optional<Donor> fromRepo = donorRepository.findByUsername(username);
-        return fromRepo.orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+    public Donor findById(long id) throws NotPresentException{
+        Optional<Donor> fromRepo = donorRepository.findById(id);
+        return fromRepo.orElseThrow(() -> new NotPresentException("ID: " + id + " not found"));
     }
     
     @Override
-    public List<Request> getRequests(String username) throws UsernameNotFoundException {
-        if(!isUsernamePresent(username)) throw new UsernameNotFoundException("username " + username + " not found");
-        return donorRepository.findRequestsByUsername(username);
+    public List<Request> getRequests(long id) throws NotPresentException {
+        if(!isDonorPresent(id)) throw new NotPresentException("Donor with ID: " + id + " not found");
+        return donorRepository.findRequestsById(id);
     }
     
     
     @Override
-    public List<Request> getPendingRequests(String username) throws UsernameNotFoundException {
-        if(!isUsernamePresent(username)) throw new UsernameNotFoundException("username " + username + " not found");
-        return donorRepository.findPendingRequestsByUsername(username);
+    public List<Request> getPendingRequests(long id) throws NotPresentException {
+        if(!isDonorPresent(id)) throw new NotPresentException("Donor with ID: " + id + " not found");
+        return donorRepository.findPendingRequestsById(id);
     }
 
     @Override
@@ -133,18 +127,16 @@ public class DonorServiceImpl implements DonorService{
         return ret;
     }
 
+    private boolean isDonorPresent(long id){
+        return donorRepository.findById(id).isPresent();
+    }
+
     private boolean isUsernamePresent(String username){
-        if(donorRepository.findByUsername(username).isEmpty()){
-            return false;
-        }
-        return true;
+        return donorRepository.findByUsername(username).isPresent();
     }
 
     private boolean isPhoneNumberPresent(long phoneNumber){
-        if(donorRepository.findByPhoneNumber(phoneNumber).isEmpty()){
-            return false;
-        }
-        return true;
+        return donorRepository.findByPhoneNumber(phoneNumber).isPresent();
     }
     
     

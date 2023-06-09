@@ -4,7 +4,7 @@ import com.bnl.bloodbank.entity.Admin;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
 import com.bnl.bloodbank.repository.AdminRepository;
 import com.bnl.bloodbank.service.AdminService;
-import com.bnl.bloodbank.service.AdminServiceImpl;
+import com.bnl.bloodbank.serviceImpl.AdminServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -59,74 +59,74 @@ public class AdminTest {
     }
 
     /**
-     * To check if findByUsername returns user if username is present.
+     * To check if findByUsername returns user if id is present.
      * @throws UsernameNotFoundException
      */
     @Test
-    void validFindByUsername() throws UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
-        Assertions.assertEquals(adminService.findByUsername(admin.getUsername()), admin);
+    void validFindById() throws UsernameNotFoundException{
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.of(admin));
+        Assertions.assertEquals(adminService.findById(admin.getAdminId()), admin);
     }
 
     /**
-     * To check findByUsername throws UsernameNotFoundException if username not present
+     * To check findByUsername throws UsernameNotFoundException if id not present
      * @throws UsernameNotFoundException
      */
     @Test
     void invalidFindByUsername() throws  UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.empty());
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.empty());
         UsernameNotFoundException ex = Assertions.assertThrows(
                 UsernameNotFoundException.class,
-                () -> adminService.findByUsername(admin.getUsername())
+                () -> adminService.findById(admin.getAdminId())
         );
-        Assertions.assertEquals(ex.getMessage(), "Username " + admin.getUsername() + " not found");
+        Assertions.assertEquals(ex.getMessage(), "Username with ID: " + admin.getAdminId() + " not found");
     }
 
     /**
-     * To check password is successfully updated if username present.
+     * To check password is successfully updated if id present.
      * @throws UsernameNotFoundException
      */
     @Test
     void validUpdatePassword() throws UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
-        Assertions.assertEquals(adminService.updatePassword(admin.getUsername(), admin.getPassword()), "Password Successfully Changed");
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.of(admin));
+        Assertions.assertEquals(adminService.updatePassword(admin.getAdminId(), admin.getPassword()), "Password Successfully Changed");
     }
 
     /**
-     * To check password update throws UsernameNotFoundException if username not present in database.
+     * To check password update throws UsernameNotFoundException if id not present in database.
      * @throws UsernameNotFoundException
      */
     @Test
     void invalidUpdatePassword() throws UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.empty());
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.empty());
         UsernameNotFoundException ex = Assertions.assertThrows(
                 UsernameNotFoundException.class,
-                () -> adminService.updatePassword(admin.getUsername(), admin.getPassword())
+                () -> adminService.updatePassword(admin.getAdminId(), admin.getPassword())
         );
-        Assertions.assertEquals(ex.getMessage(), "Username " + admin.getUsername() + " not found");
+        Assertions.assertEquals(ex.getMessage(), "Username with ID: " + admin.getAdminId() + " not found");
     }
 
     /**
-     * To check deleteAdmin successfully works when username present in database.
+     * To check deleteAdmin successfully works when id present in database.
      * @throws UsernameNotFoundException
      */
     @Test
     void validDeleteAdmin() throws UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.of(admin));
-        Assertions.assertEquals(adminService.deleteAdmin(admin.getUsername()), "Successfully Deleted admin with username : " + admin.getUsername());
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.of(admin));
+        Assertions.assertEquals(adminService.deleteAdmin(admin.getAdminId()), "Successfully Deleted admin with ID : " + admin.getAdminId());
     }
 
     /**
-     * To check deleteAdmin throws UsernameNotFoundException if username not present in database.
+     * To check deleteAdmin throws UsernameNotFoundException if id not present in database.
      * @throws UsernameNotFoundException
      */
     @Test
     void invalidDeleteAdmin() throws UsernameNotFoundException{
-        Mockito.when(adminRepository.findByUsername(admin.getUsername())).thenReturn(Optional.empty());
+        Mockito.when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.empty());
         UsernameNotFoundException ex = Assertions.assertThrows(
                 UsernameNotFoundException.class,
-                () -> adminService.deleteAdmin(admin.getUsername())
+                () -> adminService.deleteAdmin(admin.getAdminId())
         );
-        Assertions.assertEquals(ex.getMessage(), "Username " + admin.getUsername() + " not found");
+        Assertions.assertEquals(ex.getMessage(), "ID: " + admin.getAdminId() + " not found");
     }
 }

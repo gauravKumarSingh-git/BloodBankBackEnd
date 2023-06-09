@@ -4,7 +4,7 @@ import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.repository.RequestRepository;
 import com.bnl.bloodbank.service.RequestService;
-import com.bnl.bloodbank.service.RequestServiceImpl;
+import com.bnl.bloodbank.serviceImpl.RequestServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

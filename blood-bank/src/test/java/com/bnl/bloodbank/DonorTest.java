@@ -3,10 +3,12 @@ package com.bnl.bloodbank;
 import com.bnl.bloodbank.entity.Donor;
 import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.AlreadyPresentException;
+import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
 import com.bnl.bloodbank.repository.DonorRepository;
 import com.bnl.bloodbank.service.DonorService;
-import com.bnl.bloodbank.service.DonorServiceImpl;
+import com.bnl.bloodbank.serviceImpl.DonorServiceImpl;
+import com.bnl.bloodbank.utility.UserRequestsResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -31,7 +35,7 @@ public class DonorTest {
     @InjectMocks
     DonorService donorService = new DonorServiceImpl();
 
-        private static Donor donor = Donor.builder()
+        private Donor donor = Donor.builder()
                     .donorId(1)
                     .address("DTP")
                     .city("Bangalore")
@@ -42,7 +46,9 @@ public class DonorTest {
                     .username("donor")
                     .phoneNumber(1234567890L)
                     .dateOfBirth(LocalDate.of(2000, 10, 11))
-                    .requests( new ArrayList<Request>())
+                    .requests( new ArrayList<Request>(Arrays.asList(
+                            new Request(1L, "A+", 10L, LocalDate.now(), "pending", this.donor,null )
+                    )))
                     .build();
 
     private static Request request =
@@ -92,59 +98,68 @@ public class DonorTest {
     }
 
     /**
-     * To check updateDonor is successful if username is valid
-     * @throws UsernameNotFoundException
+     * To check updateDonor is successful if id is valid
+     * @throws NotPresentException
      * @throws AlreadyPresentException
      */
     @Test
-    void validUpdateDonor() throws UsernameNotFoundException, AlreadyPresentException {
-        Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
+    void validUpdateDonor() throws NotPresentException, AlreadyPresentException {
+        Mockito.when(donorRepository.findById(donor.getDonorId())).thenReturn(Optional.of(donor));
         Assertions.assertEquals(donorService.updateDonor(donor), "Successfully updated");
     }
 
     /**
-     * To check addRequest is successful if username is valid
-     * @throws UsernameNotFoundException
+     * To check addRequest is successful if id is valid
+     * @throws NotPresentException
      */
     @Test
-    void validAddRequest() throws UsernameNotFoundException{
-        Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
-        Assertions.assertEquals(donorService.addRequest(donor.getUsername(), request), "Request Successfully added to : " + donor.getUsername());
+    void validAddRequest() throws NotPresentException{
+        Mockito.when(donorRepository.findById(donor.getDonorId())).thenReturn(Optional.of(donor));
+        Assertions.assertEquals(donorService.addRequest(donor.getDonorId(), request), "Request Successfully added to donor with ID: " + donor.getDonorId());
     }
 
     /**
-     * To check deleteDonor is successful if username is valid
-     * @throws UsernameNotFoundException
+     * To check deleteDonor is successful if id is valid
+     * @throws NotPresentException
      */
     @Test
-    void validDonorDelete() throws UsernameNotFoundException {
-        Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
-        Assertions.assertEquals(donorService.deleteDonor(donor.getUsername()), "Donor with username : " + donor.getUsername() + " successfully deleted");
+    void validDonorDelete() throws NotPresentException {
+        Mockito.when(donorRepository.findById(donor.getDonorId())).thenReturn(Optional.of(donor));
+        Assertions.assertEquals(donorService.deleteDonor(donor.getDonorId()), "Donor with ID: " + donor.getDonorId() + " successfully deleted");
     }
 
     /**
-     * To check findByUsername throws UsernameNotPresentException if username is not present in database.
-     * @throws UsernameNotFoundException
+     * To check findById throws NotPresentException if id is not present in database.
+     * @throws NotPresentException
      */
     @Test
-    void invalidFindByUsername() throws UsernameNotFoundException {
-        Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.empty());
-        UsernameNotFoundException ex = Assertions.assertThrows(
-                UsernameNotFoundException.class,
-                () -> donorService.findByUsername(donor.getUsername())
+    void invalidFindById() throws NotPresentException {
+        Mockito.when(donorRepository.findById(donor.getDonorId())).thenReturn(Optional.empty());
+        NotPresentException ex = Assertions.assertThrows(
+                NotPresentException.class,
+                () -> donorService.findById(donor.getDonorId())
         );
-        Assertions.assertEquals(ex.getMessage(), "Username " + donor.getUsername() + " not found");
+        Assertions.assertEquals(ex.getMessage(), "ID: " + donor.getDonorId() + " not found");
     }
 
     /**
-     * To check getRequest is successful if username is valid
-     * @throws UsernameNotFoundException
+     * To check getRequest is successful if id is valid
+     * @throws NotPresentException
      */
     @Test
-    void validGetRequest() throws UsernameNotFoundException {
-        Mockito.when(donorRepository.findByUsername(donor.getUsername())).thenReturn(Optional.of(donor));
-        Assertions.assertEquals(donorService.getRequests(donor.getUsername()), donor.getRequests());
+    void validGetRequest() throws NotPresentException {
+        Mockito.when(donorRepository.findById(donor.getDonorId())).thenReturn(Optional.of(donor));
+        Mockito.when(donorRepository.findRequestsById(donor.getDonorId())).thenReturn(donor.getRequests());
+        Assertions.assertEquals(donorService.getRequests(donor.getDonorId()), donor.getRequests());
     }
 
+    @Test
+    void validGetUserAndRequestDetails() {
+        Mockito.when(donorRepository.getUserAndRequestDetails()).thenReturn(List.of(donor));
+        List<UserRequestsResponse> res = donorService.getUserAndRequestDetails();
+        res.forEach(userReq -> {
+            Assertions.assertEquals(userReq.getStatus(), "pending");
+        });
+    }
 
 }

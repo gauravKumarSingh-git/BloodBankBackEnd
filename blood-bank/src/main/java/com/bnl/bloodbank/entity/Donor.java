@@ -28,7 +28,7 @@ public class Donor {
     private long donorId;
 
     @NotNull(message = "Username cannot be null")
-    @Pattern(regexp = "[a-zA-Z0-9]+( [A-Za-z0-9]+)*", message = "Username should contain only alphabets and numerical values")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "Username should contain only alphabets and numerical values")
     @Size(min=5, message = "Username should be at least 5 characters long")
     @Size(max = 15, message = "Username should be less than 16 characters")
     private String username;

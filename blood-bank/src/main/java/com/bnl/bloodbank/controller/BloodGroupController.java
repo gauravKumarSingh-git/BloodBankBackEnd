@@ -22,7 +22,7 @@ import com.bnl.bloodbank.service.BloodGroupService;
 @RestController
 @RequestMapping("/bloodgroup")
 @Validated
-public class BloodGroupAPI {
+public class BloodGroupController {
 
     @Autowired
     BloodGroupService bloodGroupService;

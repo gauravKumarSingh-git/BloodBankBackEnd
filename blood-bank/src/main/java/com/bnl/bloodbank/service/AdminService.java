@@ -16,27 +16,27 @@ public interface AdminService {
     /**
      * To get details of admin by username. Username should be present in database otherwise
      * UsernameNotFoundException will be thrown
-     * @param username
+     * @param id
      * @return
      * @throws UsernameNotFoundException
      */
-    public Admin findByUsername(String username) throws UsernameNotFoundException;
+    public Admin findById(long id) throws UsernameNotFoundException;
 
     /**
      * To update password of admin. The password will be encrypted first and then stored to database
-     * @param username
+     * @param id
      * @param password
      * @return String
      * @throws UsernameNotFoundException
      */
-    public String updatePassword(String username, String password) throws UsernameNotFoundException;
+    public String updatePassword(long id, String password) throws UsernameNotFoundException;
 
     /**
-     * To delete details of admin by username. The username should be present in database
-     * @param username
+     * To delete details of admin by id. The id should be present in database
+     * @param id
      * @return String
      * @throws UsernameNotFoundException
      */
-    public String deleteAdmin(String username) throws UsernameNotFoundException;
+    public String deleteAdmin(long id) throws UsernameNotFoundException;
     
 }

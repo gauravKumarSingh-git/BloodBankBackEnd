@@ -15,10 +15,10 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     Optional<Hospital> findByMobileNumber(long mobileNumber);
 
-    @Query("SELECT h.requests from Hospital h where h.username = :username")
-    List<Request> findRequestsByUsername(String username);
+    @Query("SELECT h.requests from Hospital h where h.hospitalId = :id")
+    List<Request> findRequests(long id);
 
-    @Query("SELECT r from Hospital h inner join Request r on h.hospitalId = r.hospital.hospitalId where h.username = :username and r.status = 'pending'")
-    List<Request> findPendingRequestByUsername(String username);
+    @Query("SELECT r from Hospital h inner join Request r on h.hospitalId = r.hospital.hospitalId where h.hospitalId = :id and r.status = 'pending'")
+    List<Request> findPendingRequest(long id);
     
 }

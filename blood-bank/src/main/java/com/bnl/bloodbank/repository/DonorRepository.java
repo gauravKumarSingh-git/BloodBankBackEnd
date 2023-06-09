@@ -16,11 +16,11 @@ public interface DonorRepository extends JpaRepository<Donor, Long>{
 
     Optional<Donor> findByPhoneNumber(long phoneNumber);
 
-    @Query("SELECT d.requests from Donor d where d.username = :username")
-    List<Request> findRequestsByUsername(String username);
+    @Query("SELECT d.requests from Donor d where d.donorId = :id")
+    List<Request> findRequestsById(long id);
 
-    @Query("SELECT r from Donor d inner join Request r on d.donorId = r.donor.donorId where d.username = :username and r.status = 'pending'")
-    List<Request> findPendingRequestsByUsername(String username);
+    @Query("SELECT r from Donor d inner join Request r on d.donorId = r.donor.donorId where d.donorId = :id and r.status = 'pending'")
+    List<Request> findPendingRequestsById(long id);
 
     @Query("SELECT d from Donor d inner join Request r on d.donorId = r.donor.donorId where r.status = 'pending'")
     List<Donor> getUserAndRequestDetails();

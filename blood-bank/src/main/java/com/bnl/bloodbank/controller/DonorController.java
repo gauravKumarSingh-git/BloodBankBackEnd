@@ -2,6 +2,7 @@ package com.bnl.bloodbank.controller;
 
 import java.util.List;
 
+import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.utility.UserRequestsResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import com.bnl.bloodbank.service.DonorService;
 @RestController
 @RequestMapping("/donor")
 @Validated
-public class DonorAPI {
+public class DonorController {
 
     @Autowired
     DonorService donorService;
@@ -47,68 +48,68 @@ public class DonorAPI {
      * To update donor details which are already present in database
      * @param donor
      * @return ResponseEntity<String>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      * @throws AlreadyPresentException
      */
     @PutMapping("/updateDonor")
-    public ResponseEntity<String> updateDonor(@Valid @RequestBody Donor donor) throws UsernameNotFoundException, AlreadyPresentException{
+    public ResponseEntity<String> updateDonor(@Valid @RequestBody Donor donor) throws NotPresentException, AlreadyPresentException{
         return new ResponseEntity<>(donorService.updateDonor(donor), HttpStatus.OK);
     }
 
     /**
-     * To add request of a donor by username
-     * @param username
+     * To add request of a donor by id
+     * @param id
      * @param request
      * @return ResponseEntity<String>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    @PatchMapping("/addRequest/{username}")
-    public ResponseEntity<String> addRequest(@PathVariable String username,@Valid @RequestBody Request request) throws UsernameNotFoundException{
-        return new ResponseEntity<>(donorService.addRequest(username, request), HttpStatus.OK);
+    @PatchMapping("/addRequest/{id}")
+    public ResponseEntity<String> addRequest(@PathVariable long id,@Valid @RequestBody Request request) throws NotPresentException{
+        return new ResponseEntity<>(donorService.addRequest(id, request), HttpStatus.OK);
     }
 
     /**
-     * To delete donor by username
-     * @param username
+     * To delete donor by id
+     * @param id
      * @return ResponseEntity<String>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    @DeleteMapping("/deleteDonor/{username}")
-    public ResponseEntity<String> deleteDonor(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(donorService.deleteDonor(username), HttpStatus.OK);
+    @DeleteMapping("/deleteDonor/{id}")
+    public ResponseEntity<String> deleteDonor(@PathVariable long id) throws NotPresentException{
+        return new ResponseEntity<>(donorService.deleteDonor(id), HttpStatus.OK);
     }
 
     /**
-     * To find a donor by username
-     * @param username
+     * To find a donor by id
+     * @param id
      * @return ResponseEntity<Donor>
      * @throws UsernameNotFoundException
      */
-    @GetMapping("/findByUsername/{username}")
-    public ResponseEntity<Donor> findByUsername(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<Donor>(donorService.findByUsername(username), HttpStatus.OK);
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Donor> findById(@PathVariable long id) throws NotPresentException {
+        return new ResponseEntity<Donor>(donorService.findById(id), HttpStatus.OK);
     }
 
     /**
-     * to get Requests made by a donor by username
-     * @param username
+     * to get Requests made by a donor by id
+     * @param id
      * @return ResponseEntity<List<Request>>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    @GetMapping("/getRequests/{username}")
-    public ResponseEntity<List<Request>> getRequests(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(donorService.getRequests(username), HttpStatus.OK);
+    @GetMapping("/getRequests/{id}")
+    public ResponseEntity<List<Request>> getRequests(@PathVariable long id) throws NotPresentException{
+        return new ResponseEntity<>(donorService.getRequests(id), HttpStatus.OK);
     }
 
     /**
      * To get pending requests of a donor
-     * @param username
+     * @param id
      * @return ResponseEntity<List<Request>>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    @GetMapping("/getPendingRequests/{username}")
-    public ResponseEntity<List<Request>> getPendingRequests(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(donorService.getPendingRequests(username), HttpStatus.OK);
+    @GetMapping("/getPendingRequests/{id}")
+    public ResponseEntity<List<Request>> getPendingRequests(@PathVariable long id) throws NotPresentException{
+        return new ResponseEntity<>(donorService.getPendingRequests(id), HttpStatus.OK);
     }
 
     /**

@@ -21,7 +21,7 @@ import com.bnl.bloodbank.service.AdminService;
 @RestController
 @RequestMapping("/admin")
 @Validated
-public class AdminAPI {
+public class AdminController {
 
     @Autowired
     AdminService adminService;
@@ -38,36 +38,36 @@ public class AdminAPI {
     }
 
     /**
-     * Get admin details by username
-     * @param username
+     * Get admin details by id
+     * @param id
      * @return ResponseEntity<Admin>
      * @throws UsernameNotFoundException
      */
-    @GetMapping("/findByUsername/{username}")
-    public ResponseEntity<Admin> findByUsername(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(adminService.findByUsername(username), HttpStatus.OK);
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<Admin> findById(@PathVariable long id) throws UsernameNotFoundException{
+        return new ResponseEntity<>(adminService.findById(id), HttpStatus.OK);
     }
 
     /**
-     * Update password of admin by username
-     * @param username
+     * Update password of admin by id
+     * @param id
      * @param password
      * @return ResponseEntity<String>
      * @throws UsernameNotFoundException
      */
-    @PatchMapping("/updatePassword/{username}/{password}")
-    public ResponseEntity<String> updatePassword(@PathVariable String username, @PathVariable String password) throws UsernameNotFoundException {
-        return new ResponseEntity<>(adminService.updatePassword(username, password), HttpStatus.OK);
+    @PatchMapping("/updatePassword/{id}/{password}")
+    public ResponseEntity<String> updatePassword(@PathVariable long id, @PathVariable String password) throws UsernameNotFoundException {
+        return new ResponseEntity<>(adminService.updatePassword(id, password), HttpStatus.OK);
     }
 
     /**
-     * Delete admin by username
-     * @param username
+     * Delete admin by id
+     * @param id
      * @return ResponseEntity<String>
      * @throws UsernameNotFoundException
      */
-    @DeleteMapping("/deleteAdmin/{username}")
-    public ResponseEntity<String> deleteAdmin(@PathVariable String username) throws UsernameNotFoundException{
-        return new ResponseEntity<>(adminService.deleteAdmin(username), HttpStatus.OK);
+    @DeleteMapping("/deleteAdmin/{id}")
+    public ResponseEntity<String> deleteAdmin(@PathVariable long id) throws UsernameNotFoundException{
+        return new ResponseEntity<>(adminService.deleteAdmin(id), HttpStatus.OK);
     }
 }

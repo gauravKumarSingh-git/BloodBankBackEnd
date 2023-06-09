@@ -5,6 +5,7 @@ import java.util.List;
 import com.bnl.bloodbank.entity.Donor;
 import com.bnl.bloodbank.entity.Request;
 import com.bnl.bloodbank.exception.AlreadyPresentException;
+import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.exception.UsernameNotFoundException;
 import com.bnl.bloodbank.utility.UserRequestsResponse;
 
@@ -24,52 +25,52 @@ public interface DonorService {
      * be already registered
      * @param donor
      * @return String
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      * @throws AlreadyPresentException
      */
-    public String updateDonor(Donor donor) throws UsernameNotFoundException, AlreadyPresentException;
+    public String updateDonor(Donor donor) throws NotPresentException, AlreadyPresentException;
 
     /**
      * To add a request to list of request of a donor. Default value of status is pending and
      * date is current date.
-     * @param username
+     * @param id
      * @param request
      * @return String
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    public String addRequest(String username, Request request) throws UsernameNotFoundException;
+    public String addRequest(long id, Request request) throws NotPresentException;
 
     /**
-     * Delete a donor by username
-     * @param username
+     * Delete a donor by id
+     * @param id
      * @return String
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    public String deleteDonor(String username) throws UsernameNotFoundException;
+    public String deleteDonor(long id) throws NotPresentException;
 
     /**
-     * find a donor by username
-     * @param username
+     * find a donor by id
+     * @param id
      * @return Donor
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    public Donor findByUsername(String username) throws UsernameNotFoundException;
+    public Donor findById(long id) throws NotPresentException;
 
     /**
      * get all requests made by a donor by username
      * @param username
      * @return List<Request>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    public List<Request> getRequests(String username) throws UsernameNotFoundException;
+    public List<Request> getRequests(long id) throws NotPresentException;
 
     /**
-     * Get all pending requests made by a donor by username
-     * @param username
+     * Get all pending requests made by a donor by id
+     * @param id
      * @return List<Reqeusts>
-     * @throws UsernameNotFoundException
+     * @throws NotPresentException
      */
-    public List<Request> getPendingRequests(String username) throws UsernameNotFoundException;
+    public List<Request> getPendingRequests(long id) throws NotPresentException;
 
     /**
      * Get pending requests and user details

@@ -1,9 +1,11 @@
-package com.bnl.bloodbank.service;
+package com.bnl.bloodbank.serviceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.bnl.bloodbank.exception.NotPresentException;
+import com.bnl.bloodbank.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,15 +42,15 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public Hospital findByUsername(String username) throws UsernameNotFoundException {
-        Optional<Hospital> formRepo = hospitalRepository.findByUsername(username);
-        return formRepo.orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+    public Hospital findById(long id) throws NotPresentException {
+        Optional<Hospital> formRepo = hospitalRepository.findById(id);
+        return formRepo.orElseThrow(() -> new NotPresentException("ID: " + id + " not found"));
     }
 
 
     @Override
-    public String updateHospital(Hospital hospital) throws UsernameNotFoundException, AlreadyPresentException {
-        Hospital fromRepo = findByUsername(hospital.getUsername());
+    public String updateHospital(Hospital hospital) throws NotPresentException, AlreadyPresentException {
+        Hospital fromRepo = findById(hospital.getHospitalId());
         if(isPhoneNumberPresent(hospital.getMobileNumber())){
             if(fromRepo.getMobileNumber() != hospital.getMobileNumber()){
                 throw new AlreadyPresentException("Phone Number already present");
@@ -56,21 +58,21 @@ public class HospitalServiceImpl implements HospitalService {
         }
         fromRepo.setPassword(passwordEncoder.encode(hospital.getPassword()));
         hospitalRepository.save(hospital);
-        return "Successfully Updated hospital details with username : " + hospital.getUsername();
+        return "Successfully Updated hospital details with ID: " + hospital.getHospitalId();
     }
 
 
     @Override
-    public String deleteHospital(String username) throws UsernameNotFoundException {
-        Hospital fromRepo = findByUsername(username);
+    public String deleteHospital(long id) throws NotPresentException {
+        Hospital fromRepo = findById(id);
         hospitalRepository.delete(fromRepo);
-        return "Hospital with username: " + username + " successfully deleted";
+        return "Hospital with ID: " + id + " successfully deleted";
     }
 
     
     @Override
-    public String addRequest(String username, Request request) throws UsernameNotFoundException {
-        Hospital fromRepo = findByUsername(username);
+    public String addRequest(long id, Request request) throws NotPresentException {
+        Hospital fromRepo = findById(id);
         if(request.getStatus() == null){
             request.setStatus("pending");
         }
@@ -81,32 +83,30 @@ public class HospitalServiceImpl implements HospitalService {
         List<Request> requests = fromRepo.getRequests();
         requests.add(request);
         fromRepo.setRequests(requests);
-        return "Request succssfully added to : " + username;
+        return "Request succssfully added to user with ID: " + id;
     }
 
     @Override
-    public List<Request> getRequests(String username) throws UsernameNotFoundException {
-        if(!isUsernamePresent(username)) throw new UsernameNotFoundException("Username "+ username + " not found");
-        return hospitalRepository.findRequestsByUsername(username);
+    public List<Request> getRequests(long id) throws NotPresentException {
+        if(!isUserPresent(id)) throw new NotPresentException("User with ID: "+ id + " not found");
+        return hospitalRepository.findRequests(id);
     }
 
     @Override
-    public List<Request> getPendingRequests(String username) throws UsernameNotFoundException {
-        if(!isUsernamePresent(username)) throw new UsernameNotFoundException("Username "+ username + " not found");
-        return hospitalRepository.findPendingRequestByUsername(username);
+    public List<Request> getPendingRequests(long id) throws NotPresentException {
+        if(!isUserPresent(id)) throw new NotPresentException("User with ID: "+ id + " not found");
+        return hospitalRepository.findPendingRequest(id);
     }
     
     private boolean isUsernamePresent(String username){
-        if(hospitalRepository.findByUsername(username).isEmpty()){
-            return false;
-        }
-        return true;
+        return hospitalRepository.findByUsername(username).isPresent();
+    }
+
+    private boolean isUserPresent(long id){
+        return hospitalRepository.findById(id).isPresent();
     }
 
     private boolean isPhoneNumberPresent(long phoneNumber){
-        if(hospitalRepository.findByMobileNumber(phoneNumber).isEmpty()){
-            return false;
-        }
-        return true;
+        return hospitalRepository.findByMobileNumber(phoneNumber).isPresent();
     }
 }

@@ -6,7 +6,7 @@ import com.bnl.bloodbank.exception.AlreadyPresentException;
 import com.bnl.bloodbank.exception.NotPresentException;
 import com.bnl.bloodbank.repository.BloodBankRepository;
 import com.bnl.bloodbank.service.BloodBankService;
-import com.bnl.bloodbank.service.BloodBankServiceImpl;
+import com.bnl.bloodbank.serviceImpl.BloodBankServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

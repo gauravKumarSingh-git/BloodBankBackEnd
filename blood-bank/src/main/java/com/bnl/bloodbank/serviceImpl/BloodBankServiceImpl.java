@@ -1,9 +1,10 @@
-package com.bnl.bloodbank.service;
+package com.bnl.bloodbank.serviceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.bnl.bloodbank.service.BloodBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

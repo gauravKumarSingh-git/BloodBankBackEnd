@@ -25,7 +25,7 @@ import com.bnl.bloodbank.service.BloodBankService;
 @RestController
 @RequestMapping("/bloodbank")
 @Validated
-public class BloodBankAPI {
+public class BloodBankController {
     
     @Autowired
     BloodBankService bloodBankService;

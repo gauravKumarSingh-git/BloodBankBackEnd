@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/request")
 @Validated
-public class RequestAPI {
+public class RequestController {
     
     @Autowired
     RequestService requestService;

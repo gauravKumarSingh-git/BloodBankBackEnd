@@ -1,7 +1,8 @@
-package com.bnl.bloodbank.service;
+package com.bnl.bloodbank.serviceImpl;
 
 import java.util.Optional;
 
+import com.bnl.bloodbank.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,25 +36,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin findByUsername(String username) throws UsernameNotFoundException {
-        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
-        return fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+    public Admin findById(long id) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findById(id);
+        return fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username with ID: " + id + " not found"));
     }
 
     @Override
-    public String updatePassword(String username, String password) throws UsernameNotFoundException {
-        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
-        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+    public String updatePassword(long id, String password) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findById(id);
+        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username with ID: " + id + " not found"));
         admin.setPassword(passwordEncoder.encode(password));
         return "Password Successfully Changed";
     }
 
     @Override
-    public String deleteAdmin(String username) throws UsernameNotFoundException {
-        Optional<Admin> fromRepo = adminRepository.findByUsername(username);
-        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("Username " + username + " not found"));
+    public String deleteAdmin(long id) throws UsernameNotFoundException {
+        Optional<Admin> fromRepo = adminRepository.findById(id);
+        Admin admin = fromRepo.orElseThrow(()-> new UsernameNotFoundException("ID: " + id + " not found"));
         adminRepository.delete(admin);
-        return "Successfully Deleted admin with username : " + username;
+        return "Successfully Deleted admin with ID : " + id;
     }
     
 }
